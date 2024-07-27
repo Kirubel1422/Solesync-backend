@@ -4,7 +4,9 @@
   "description": "Nodejs e-commerce backend",
   "main": "server.js",
   "scripts": {
-    "test": "test"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "cross-env NODE_ENV=production node server.js",
+    "dev": "cross-env NODE_ENV=development nodemon server.js"
   },
   "keywords": [
     "E-Commerce",
@@ -13,14 +15,28 @@
   "author": "Kirubel Mamo",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "commitizen": "^4.3.0",
     "cors": "^2.8.5",
     "cross-env": "^7.0.3",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "express-fileupload": "^1.5.1",
     "helmet": "^7.1.0",
+    "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.5.1",
     "passport": "^0.7.0",
-    "passport-local": "^1.0.0"
+    "passport-jwt": "^4.0.1",
+    "passport-local": "^1.0.0",
+    "winston": "^3.13.1"
+  },
+  "devDependencies": {
+    "cz-conventional-changelog": "^3.3.0",
+    "nodemon": "^3.1.4"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }
