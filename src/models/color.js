@@ -6,7 +6,7 @@ const colorSchema = new Schema(
       type: String,
       required: true,
     },
-    hex: {
+    code: {
       type: String,
       required: true,
     },
