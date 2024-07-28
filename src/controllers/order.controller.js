@@ -1,3 +1,4 @@
+const dayjs = require("dayjs");
 const Order = require("../models/order");
 const logger = require("../utils/logger")("order.controller");
 
@@ -104,6 +105,32 @@ exports.filterByPage = (req, res, next) => {
     .limit(limit)
     .then((result) => {
       res.json(result);
+    })
+    .catch((err) => {
+      logger.error(err);
+      next(err);
+    });
+};
+
+exports.analysis = (req, res, next) => {
+  const { type, status } = req.query;
+
+  const now = dayjs();
+  let start, end;
+
+  if (type === "past30Days") {
+    start = now.subtract(1, "month").startOf("day");
+    end = now.endOf("day");
+  } else if (type === "month") {
+    // This month
+    start = now.startOf("month");
+    end = now.endOf("month");
+  }
+
+  Order.find({ createdAt: { $lt: end, $gt: start }, status })
+    .then((result) => {
+      const total = result.reduce((acc, order) => acc + order.total, 0) / 100;
+      res.json({ orders: result.length, total });
     })
     .catch((err) => {
       logger.error(err);
