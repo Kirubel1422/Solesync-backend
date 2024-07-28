@@ -3,6 +3,8 @@ const ExtractJwt = require("passport-jwt").ExtractJwt;
 const passportLocal = require("passport-local");
 const User = require("../models/user");
 const genToken = require("../utils/jwt");
+const { authValidator } = require("../utils/validator");
+const logger = require("../utils/logger")("passport.conf");
 
 module.exports = (passport) => {
   const options = {
@@ -60,14 +62,29 @@ module.exports = (passport) => {
         passwordField: "password",
       },
       async (req, email, password, done) => {
+        const { firstName } = req.body;
         try {
+          logger.info("Registering user");
+          if (!firstName) {
+            logger.error("First name is missing");
+            return done(null, false, { message: "First name is required" });
+          }
+
           const user = await User.findOne({ email });
           if (user) {
+            logger.error("User already exists");
             return done(null, false, { message: "User already exists" });
           }
 
+          if (!authValidator(email, password)) {
+            logger.error("Fields not meet the requirements");
+            return done(null, false, {
+              message: "Fields not meet the requirements",
+            });
+          }
+
           const newUser = await User.create({
-            firstName: req.body.firstName,
+            firstName,
             email,
             password,
           });
