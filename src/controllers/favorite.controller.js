@@ -11,7 +11,7 @@ exports.getAllFavourites = (req, res, next) => {
 };
 
 exports.getSelfFavourite = (req, res, next) => {
-  Favourite.find({ userId: req.body.userId })
+  Favourite.find({ user: req.body.user })
     .then((favourites) => res.json(favourites))
     .catch((err) => {
       logger.error(err);
@@ -21,7 +21,7 @@ exports.getSelfFavourite = (req, res, next) => {
 
 exports.addToFavourite = (req, res, next) => {
   Favourite.findOneAndUpdate(
-    { userId: req.body.userId },
+    { user: req.body.user },
     { $push: { product: req.body.productId } },
     { new: true }
   )
@@ -34,7 +34,7 @@ exports.addToFavourite = (req, res, next) => {
 
 exports.removeFromFavourite = (req, res, next) => {
   Favourite.findOneAndUpdate(
-    { userId: req.body.userId },
+    { user: req.body.user },
     { $pull: { product: req.body.productId } },
     { new: true }
   )

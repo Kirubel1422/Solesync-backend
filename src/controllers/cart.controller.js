@@ -21,7 +21,7 @@ exports.getCartById = (req, res, next) => {
 };
 
 exports.getCartByUserId = (req, res, next) => {
-  Cart.findOne({ userId: req.params.userId })
+  Cart.findOne({ user: req.params.userId })
     .populate("products")
     .then((cart) => res.json(cart))
     .catch((err) => {
@@ -31,7 +31,7 @@ exports.getCartByUserId = (req, res, next) => {
 };
 
 exports.getSelfCart = (req, res, next) => {
-  Cart.find({ userId: req.body.userId })
+  Cart.find({ user: req.body.user })
     .populate("products")
     .then((cart) => res.json(cart))
     .catch((err) => {
@@ -69,7 +69,7 @@ exports.deleteCart = (req, res, next) => {
 
 exports.addProductToCart = (req, res, next) => {
   Cart.findOneAndUpdate(
-    { userId: req.body.userId },
+    { user: req.body.user },
     { $push: { products: req.body.products } },
     { new: true }
   )
@@ -82,7 +82,7 @@ exports.addProductToCart = (req, res, next) => {
 
 exports.removeProductFromCart = (req, res, next) => {
   Cart.findOneAndUpdate(
-    { userId: req.body.userId },
+    { user: req.body.user },
     { $pull: { products: req.body.products } },
     { new: true }
   )
