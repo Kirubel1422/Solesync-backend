@@ -16,7 +16,7 @@ exports.admin = (req, res, next) => {
       return res.status(403).json({ message: "Forbidden" });
     }
 
-    req.userId = user.id;
+    req.body.userId = user.id;
     next();
   })(req, res, next);
 };
@@ -37,7 +37,23 @@ exports.user = (req, res, next) => {
       return res.status(403).json({ message: "Forbidden" });
     }
 
-    req.userId = user.id;
+    req.body.userId = user.id;
+    next();
+  })(req, res, next);
+};
+
+exports.either = (req, res, next) => {
+  passport.authenticate("jwt", { session: false }, (err, result, info) => {
+    if (err) {
+      return res.status(500).json({ message: "Something went wrong!" });
+    }
+
+    if (!result) {
+      return res.status(400).json(info);
+    }
+
+    req.body.userId = result.id;
+    console.log(req.body);
     next();
   })(req, res, next);
 };
