@@ -10,7 +10,8 @@ const errorHandler = require("./src/middlewares/errorHandler");
 const app = express();
 
 app.use(express.static("public"));
-app.use("", cors());
+app.options("*", cors());
+
 app.use(
   cors({
     // origin: [process.env.CLIENT_URL],
@@ -18,13 +19,15 @@ app.use(
   })
 );
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
 app.use(
   helmet({
     contentSecurityPolicy: false,
   })
 );
 
-app.use(require("./src/configs/passport.conf")(passport));
 app.use(require("./src/routes"));
 
 app.use(
@@ -35,15 +38,14 @@ app.use(
   })
 );
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(require("./src/configs/passport.conf")(passport));
 
 app.use((req, res, next) => {
   const status = 404;
   const message = "Not found";
-  const Error = new Error(message);
-  Error.statusCode = status;
-  next(Error);
+  const error = new Error(message);
+  error.statusCode = status;
+  next(error);
 });
 
 app.use(errorHandler);
