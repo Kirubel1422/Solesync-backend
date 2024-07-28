@@ -7,9 +7,10 @@ const helmet = require("helmet");
 const passport = require("passport");
 const fileUpload = require("express-fileupload");
 const errorHandler = require("./src/middlewares/errorHandler");
+const path = require("path");
 const app = express();
 
-app.use(express.static("public"));
+app.use(express.static(path.resolve(__dirname, "./public")));
 app.options("*", cors());
 
 app.use(
@@ -25,10 +26,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(
   helmet({
     contentSecurityPolicy: false,
+    crossOriginResourcePolicy: { policy: "cross-origin" },
   })
 );
-
-app.use(require("./src/routes"));
 
 app.use(
   fileUpload({
@@ -39,6 +39,7 @@ app.use(
 );
 
 app.use(require("./src/configs/passport.conf")(passport));
+app.use(require("./src/routes"));
 
 app.use((req, res, next) => {
   const status = 404;
