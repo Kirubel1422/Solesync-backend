@@ -21,10 +21,11 @@ exports.getOrderById = (req, res, next) => {
     });
 };
 
-exports.getUserOrders = (req, res, next) => {
-  Order.find({ user: req.params.userId })
-    .populate("products")
-    .then((orders) => res.json(orders))
+exports.getSelfOrder = (req, res, next) => {
+  Order.find({ userId: req.body.userId })
+    .then((orders) => {
+      res.json(orders);
+    })
     .catch((err) => {
       logger.error(err);
       next(err);
@@ -33,7 +34,6 @@ exports.getUserOrders = (req, res, next) => {
 
 exports.createOrder = (req, res, next) => {
   Order.create(req.body)
-    .populate("products")
     .then((order) => res.status(201).json(order))
     .catch((err) => {
       logger.error(err);

@@ -1,4 +1,5 @@
 const User = require("../models/user");
+const { authValidator } = require("../utils/validator");
 const logger = require("../utils/logger")("user.controller");
 
 exports.getAllUsers = (req, res, next) => {
@@ -20,7 +21,9 @@ exports.getUserById = (req, res, next) => {
 };
 
 exports.createUser = (req, res, next) => {
-  User.create(req.body)
+  const newUser = new User(req.body);
+  newUser
+    .save()
     .then((user) => res.status(201).json(user))
     .catch((err) => {
       logger.error(err);

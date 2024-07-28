@@ -21,7 +21,7 @@ exports.getCartById = (req, res, next) => {
 };
 
 exports.getCartByUserId = (req, res, next) => {
-  Cart.findOne({ user: req.params.userId })
+  Cart.findOne({ userId: req.params.userId })
     .populate("products")
     .then((cart) => res.json(cart))
     .catch((err) => {
@@ -31,7 +31,7 @@ exports.getCartByUserId = (req, res, next) => {
 };
 
 exports.getSelfCart = (req, res, next) => {
-  Cart.findOne({ user: req.userId })
+  Cart.find({ userId: req.body.userId })
     .populate("products")
     .then((cart) => res.json(cart))
     .catch((err) => {
@@ -68,11 +68,11 @@ exports.deleteCart = (req, res, next) => {
 };
 
 exports.addProductToCart = (req, res, next) => {
-  Cart.findById(req.params.id)
-    .then((cart) => {
-      cart.products.push(req.body);
-      return cart.save();
-    })
+  Cart.findOneAndUpdate(
+    { userId: req.body.userId },
+    { $push: { products: req.body.products } },
+    { new: true }
+  )
     .then((cart) => res.json(cart))
     .catch((err) => {
       logger.error(err);
@@ -81,12 +81,14 @@ exports.addProductToCart = (req, res, next) => {
 };
 
 exports.removeProductFromCart = (req, res, next) => {
-  Cart.findById(req.params.id)
+  Cart.findOneAndUpdate(
+    { userId: req.body.userId },
+    { $pull: { products: req.body.products } },
+    { new: true }
+  )
     .then((cart) => {
-      cart.products.pull(req.body);
-      return cart.save();
+      res.json(cart);
     })
-    .then((cart) => res.json(cart))
     .catch((err) => {
       logger.error(err);
       next(err);
