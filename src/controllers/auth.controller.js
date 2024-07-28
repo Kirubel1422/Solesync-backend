@@ -7,8 +7,8 @@ exports.signup = (req, res, next) => {
       logger.error(err);
       return next(err);
     }
-
     if (!result) {
+      logger.error(info);
       return res.status(400).json({ message: info.message });
     }
 
@@ -24,6 +24,7 @@ exports.signin = (req, res, next) => {
     }
 
     if (!result) {
+      logger.error(info);
       return res.status(400).json({ message: info.message });
     }
 
