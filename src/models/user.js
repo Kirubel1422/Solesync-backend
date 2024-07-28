@@ -38,7 +38,7 @@ const userSchema = new Schema(
   }
 );
 
-userSchema.statics.isValidPassword = async function (password) {
+userSchema.methods.isValidPassword = async function (password) {
   return await bcrypt.compare(password, this.password);
 };
 
@@ -46,7 +46,9 @@ userSchema.pre("save", async function () {
   if (!this.isModified("password")) {
     return;
   }
-  this.password = await bcrypt.hash(this.password, 10);
+
+  const salt = await bcrypt.genSalt(10);
+  this.password = await bcrypt.hash(this.password, salt);
 });
 
 module.exports = model("User", userSchema);
