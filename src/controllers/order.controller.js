@@ -65,11 +65,8 @@ exports.deleteOrder = (req, res, next) => {
 exports.searchByDate = (req, res, next) => {
   const { date } = req.query;
 
-  const searchDate = new Date(date);
-  searchDate.setHours(0, 0, 0, 0);
-
-  const endDate = new Date(searchDate);
-  endDate.setHours(23, 59, 59, 99);
+  const searchDate = dayjs(date).startOf("day");
+  const endDate = searchDate.endOf("day");
 
   Order.find({ createdAt: { $gt: searchDate, $lt: endDate } })
     .then((order) => {
