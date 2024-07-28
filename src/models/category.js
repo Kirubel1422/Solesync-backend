@@ -14,8 +14,8 @@ const categorySchema = new Schema(
         delete ret.__v;
         delete ret._id;
       },
-      timestamps: true,
     },
+    timestamps: true,
   }
 );
 

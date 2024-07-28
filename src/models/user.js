@@ -33,8 +33,8 @@ const userSchema = new Schema(
         delete ret._id;
         delete ret.__v;
       },
-      timestamps: true,
     },
+    timestamps: true,
   }
 );
 

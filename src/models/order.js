@@ -2,7 +2,7 @@ const { model, Schema } = require("mongoose");
 
 const orderSchema = new Schema(
   {
-    user: {
+    userId: {
       type: Schema.Types.ObjectId,
       ref: "User",
       required: true,
@@ -47,8 +47,8 @@ const orderSchema = new Schema(
         delete ret._id;
         delete ret.__v;
       },
-      timestamps: true,
     },
+    timestamps: true,
   }
 );
 

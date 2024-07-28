@@ -2,7 +2,7 @@ const { model, Schema } = require("mongoose");
 
 const cartSchema = new Schema(
   {
-    user: {
+    userId: {
       type: Schema.Types.ObjectId,
       ref: "User",
       required: true,
@@ -38,8 +38,9 @@ const cartSchema = new Schema(
         delete ret._id;
         delete ret.__v;
       },
-      timestamps: true,
     },
+    timestamps: true,
+    _id: false,
   }
 );
 

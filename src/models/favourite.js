@@ -2,16 +2,18 @@ const { model, Schema } = require("mongoose");
 
 const favouriteSchema = new Schema(
   {
-    user: {
+    userId: {
       type: Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
-    product: {
-      type: Schema.Types.ObjectId,
-      ref: "Product",
-      required: true,
-    },
+    product: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Product",
+        required: true,
+      },
+    ],
   },
   {
     toJSON: {
@@ -20,8 +22,8 @@ const favouriteSchema = new Schema(
         delete ret._id;
         delete ret.__v;
       },
-      timestamps: true,
     },
+    timestamps: true,
   }
 );
 
