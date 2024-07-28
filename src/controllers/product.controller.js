@@ -51,3 +51,16 @@ exports.deleteProduct = (req, res, next) => {
       next(err);
     });
 };
+
+exports.search = (req, res, next) => {
+  const { findBy, value } = req.query;
+
+  Product.find({ [findBy]: { $regex: new RegExp(value, "i") } })
+    .then((result) => {
+      res.json(result);
+    })
+    .catch((err) => {
+      logger.error(err);
+      next(err);
+    });
+};
