@@ -2,7 +2,7 @@ const { model, Schema } = require("mongoose");
 
 const favouriteSchema = new Schema(
   {
-    userId: {
+    user: {
       type: Schema.Types.ObjectId,
       ref: "User",
       required: true,
