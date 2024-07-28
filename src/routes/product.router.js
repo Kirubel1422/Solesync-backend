@@ -6,6 +6,7 @@ const {
   createProduct,
   updateProduct,
   deleteProduct,
+  search,
 } = require("../controllers/product.controller");
 const { admin } = require("../middlewares/auth.middleware");
 const imageHandler = require("../utils/imageHandler");
@@ -15,5 +16,6 @@ router.route("/getProductById/:id").get(getProductById);
 router.route("/createProduct").post(admin, imageHandler, createProduct);
 router.route("/updateProduct/:id").put(admin, imageHandler, updateProduct);
 router.route("/deleteProduct/:id").delete(admin, deleteProduct);
+router.route("/search").get(admin, search);
 
 module.exports = router;

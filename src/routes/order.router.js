@@ -11,6 +11,7 @@ const {
   search,
   searchByDate,
   filterByPage,
+  analysis,
 } = require("../controllers/order.controller");
 
 router.route("/getAllOrders").get(either, getAllOrders);
@@ -22,5 +23,6 @@ router.route("/getSelfOrder").get(either, getSelfOrder);
 router.route("/search").get(admin, search);
 router.route("/searchByDate").get(admin, searchByDate);
 router.route("/queryWithPage").get(admin, filterByPage);
+router.route("/analysis").get(admin, analysis);
 
 module.exports = router;
