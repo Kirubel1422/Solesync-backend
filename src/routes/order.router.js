@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const { either, admin } = require("../middlewares/auth.middleware");
 
 const {
   getAllOrders,
@@ -6,14 +7,14 @@ const {
   createOrder,
   updateOrder,
   deleteOrder,
-  getUserOrders,
+  getSelfOrder,
 } = require("../controllers/order.controller");
 
-router.route("/getAllOrders").get(getAllOrders);
-router.route("/getUserOrders/:id").get(getUserOrders);
-router.route("/getOrderById/:id").get(getOrderById);
-router.route("/createOrder").post(createOrder);
-router.route("/updateOrder/:id").put(updateOrder);
-router.route("/deleteOrder/:id").delete(deleteOrder);
+router.route("/getAllOrders").get(either, getAllOrders);
+router.route("/getOrderById/:id").get(either, getOrderById);
+router.route("/createOrder").post(either, createOrder);
+router.route("/updateOrder/:id").put(either, updateOrder);
+router.route("/deleteOrder/:id").delete(either, deleteOrder);
+router.route("/getSelfOrder").get(either, getSelfOrder);
 
 module.exports = router;
