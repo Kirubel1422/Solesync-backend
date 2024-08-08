@@ -25,8 +25,7 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use(
   helmet({
-    contentSecurityPolicy: false,
-    crossOriginResourcePolicy: { policy: "cross-origin" },
+    crossOriginResourcePolicy: false,
   })
 );
 
