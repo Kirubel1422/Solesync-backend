@@ -1,5 +1,6 @@
 const logger = require("../utils/logger")("auth.controller");
 const passport = require("passport");
+const User = require("../models/user");
 
 exports.signup = (req, res, next) => {
   passport.authenticate("local-register", (err, result, info) => {
@@ -30,4 +31,15 @@ exports.signin = (req, res, next) => {
 
     res.json(result);
   })(req, res, next);
+};
+
+exports.updateProfile = (req, res, next) => {
+  User.findByIdAndUpdate(req.body.user, req.body, { new: true })
+    .then((user) => {
+      res.json(user);
+    })
+    .catch((err) => {
+      logger.error(err);
+      next(err);
+    });
 };
