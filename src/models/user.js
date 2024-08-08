@@ -24,6 +24,9 @@ const userSchema = new Schema(
       enum: ["admin", "user"],
       default: "user",
     },
+    phone: {
+      type: String,
+    },
   },
   {
     toJSON: {
