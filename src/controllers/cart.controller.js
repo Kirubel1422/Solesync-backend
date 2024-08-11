@@ -49,6 +49,7 @@ exports.createCart = (req, res, next) => {
     });
 };
 
+// This is to increment the quantity of a product in the cart
 exports.updateCart = (req, res, next) => {
   Cart.findByIdAndUpdate(req.params.id, req.body, { new: true })
     .then((cart) => res.json(cart))
@@ -67,17 +68,40 @@ exports.deleteCart = (req, res, next) => {
     });
 };
 
-exports.addProductToCart = (req, res, next) => {
-  Cart.findOneAndUpdate(
-    { user: req.body.user },
-    { $push: { products: req.body.products } },
-    { new: true }
-  )
-    .then((cart) => res.json(cart))
-    .catch((err) => {
-      logger.error(err);
-      next(err);
-    });
+exports.addProductToCart = async (req, res, next) => {
+  try {
+    let cart = await Cart.findOne({ user: req.body.user });
+
+    if (!cart) {
+      cart = new Cart(req.body);
+    } else {
+      let existingItem = false;
+
+      req.body.products.forEach((product) => {
+        existingItem = cart.products.find((item) => {
+          return (
+            item.product.toString() == product.product &&
+            item.color == product.color &&
+            item.size == product.size
+          );
+        });
+      });
+
+      if (existingItem) {
+        existingItem.quantity += req.body.products.find(
+          (prod) => prod.product == existingItem.product
+        ).quantity;
+      } else {
+        cart.products.push(product);
+      }
+    }
+
+    await cart.save();
+    res.json(cart);
+  } catch (error) {
+    logger.error(error);
+    next(error);
+  }
 };
 
 exports.removeProductFromCart = (req, res, next) => {
