@@ -14,7 +14,7 @@ const {
 
 router.route("/getAllFavourites").get(admin, getAllFavourites);
 router.route("/getFavouriteById/:id").get(admin, getFavouriteById);
-router.route("/getSelfFavorites").get(getSelfFavourite);
+router.route("/getSelfFavorites").get(either, getSelfFavourite);
 router.route("/createFavourite").post(either, createFavourite);
 router.route("/updateFavourite/:id").put(either, updateFavourite);
 router.route("/deleteFavourite/:id").delete(either, deleteFavourite);

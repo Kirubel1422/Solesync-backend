@@ -10,6 +10,9 @@ const {
   addProductToCart,
   removeProductFromCart,
   getSelfCart,
+  getCartDetail,
+  incrementItem,
+  decrementItem,
 } = require("../controllers/cart.controller");
 const { admin, user, either } = require("../middlewares/auth.middleware");
 
@@ -22,5 +25,8 @@ router.route("/deleteCart/:id").delete(either, deleteCart);
 router.route("/getCartByUserId/:userId").get(admin, getCartByUserId);
 router.route("/addProductToCart").patch(either, addProductToCart);
 router.route("/removeProductFromCart").patch(either, removeProductFromCart);
+router.route("/getCartDetail").get(either, getCartDetail);
+router.route("/incrementItem/:id").patch(either, incrementItem);
+router.route("/decrementItem/:id").patch(either, decrementItem);
 
 module.exports = router;
