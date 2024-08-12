@@ -1,6 +1,15 @@
 const Product = require("../models/product");
 const logger = require("../utils/logger")("product.controller");
 
+exports.getTotalProducts = (req, res, next) => {
+  Product.countDocuments()
+    .then((total) => res.json({ total }))
+    .catch((err) => {
+      logger.error(err);
+      next(err);
+    });
+};
+
 exports.getAllProducts = (req, res, next) => {
   Product.find()
     .populate("colors")
@@ -59,6 +68,20 @@ exports.search = (req, res, next) => {
     .then((result) => {
       res.json(result);
     })
+    .catch((err) => {
+      logger.error(err);
+      next(err);
+    });
+};
+exports.getPopularProducts = (req, res, next) => {
+  const { page, limit } = req.query;
+  const skipCount = Math.abs((page - 1) * limit);
+
+  Product.find()
+    .sort({ sold: -1 })
+    .skip(skipCount)
+    .limit(limit)
+    .then((products) => res.json(products))
     .catch((err) => {
       logger.error(err);
       next(err);
