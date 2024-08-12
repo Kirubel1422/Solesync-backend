@@ -49,6 +49,10 @@ const productSchema = new Schema(
         required: true,
       },
     ],
+    sold: {
+      type: Number,
+      default: 0,
+    },
   },
   {
     toJSON: {
