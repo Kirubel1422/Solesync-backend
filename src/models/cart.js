@@ -40,7 +40,6 @@ const cartSchema = new Schema(
       },
     },
     timestamps: true,
-    _id: false,
   }
 );
 
